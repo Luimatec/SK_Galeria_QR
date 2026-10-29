@@ -56,7 +56,7 @@ img {
 
 .btn-whatsapp {
     position: fixed;
-    bottom: 25px;       /* Distancia desde abajo */
+    bottom: 80px;       /* Distancia desde abajo */
     right: 25px;        /* Distancia desde la derecha */
     z-index: 999;      /* Se mantiene por encima de todo */
         /* max-width: 60px; Controla el tamaño máximo del icono/botón */
