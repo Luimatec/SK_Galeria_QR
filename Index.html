@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Galería de Anuncios QR</title>
+    <!-- Tailwind CSS desde CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome para iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Estilos personalizados -->
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="bg-black text-white h-screen overflow-hidden select-none font-sans">
+
+    <!-- Pantalla Principal del Reproductor / Galería -->
+    <div id="galleryContainer" class="relative w-full h-full max-w-md mx-auto overflow-hidden bg-zinc-950 flex flex-col justify-between">
+        
+        <!-- Barra Superior: Barras de Progreso e Interfaz -->
+        <div class="absolute top-0 left-0 right-0 z-30 p-4 bg-gradient-to-b from-black/80 via-black/40 to-transparent pointer-events-auto">
+            <!-- Barras de Progreso acumulativas (Estilo Instagram Story) -->
+            <div id="progressSegments" class="flex gap-1.5 w-full mb-3"></div>
+
+            <!-- Header con botones de control -->
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 rounded-full bg-emerald-500/20 border border-emerald-500/50 flex items-center justify-center text-emerald-400">
+                        <i class="fa-solid fa-store text-xs"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-xs font-bold leading-none text-white drop-shadow">Iglesia Cristiana Shekinah Templo Central</h1>
+                        <span id="adCounter" class="text-[10px] text-zinc-300">1 de 2</span>
+                    </div>
+                </div>
+
+                <!-- Botones Superiores de Control (Volver, Play/Pausa, Adelantar, Compartir) -->
+                <div class="flex items-center gap-2">
+                    <!-- BOTÓN VOLVER (ANTERIOR) -->
+                    <button id="prevBtn" class="w-8 h-8 rounded-full bg-black/50 border border-white/20 flex items-center justify-center active:scale-95 transition-transform" title="Anuncio Anterior">
+                        <i class="fa-solid fa-backward text-xs"></i>
+                    </button>
+
+                    <!-- BOTÓN PAUSA / PLAY -->
+                    <button id="togglePlayBtn" class="w-8 h-8 rounded-full bg-black/50 border border-white/20 flex items-center justify-center active:scale-95 transition-transform" title="Pausar/Reproducir">
+                        <i id="playIcon" class="fa-solid fa-pause text-xs"></i>
+                    </button>
+
+                    <!-- BOTÓN ADELANTAR (SIGUIENTE) -->
+                    <button id="nextBtn" class="w-8 h-8 rounded-full bg-black/50 border border-white/20 flex items-center justify-center active:scale-95 transition-transform" title="Siguiente Anuncio">
+                        <i class="fa-solid fa-forward text-xs"></i>
+                    </button>
+
+                    <!-- BOTÓN SILENCIAR (Solo en Videos) -->
+                    <button id="toggleMuteBtn" class="w-8 h-8 rounded-full bg-black/50 border border-white/20 flex items-center justify-center hidden" title="Silenciar/Sonido">
+                        <i id="muteIcon" class="fa-solid fa-volume-xmark text-xs"></i>
+                    </button>
+
+                    <!-- BOTÓN COMPARTIR -->
+                    <button id="infoBtn" class="w-8 h-8 rounded-full bg-black/50 border border-white/20 flex items-center justify-center active:scale-95 transition-transform" title="Compartir Enlace">
+                        <i class="fa-solid fa-share-nodes text-xs"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contenedor Principal de Transición de Slides -->
+        <div id="slidesContainer" class="relative w-full h-full z-10"></div>
+
+        <!-- Areas Táctiles Invisibles en Pantalla (Toque lateral/centro) -->
+        <div class="absolute inset-0 z-20 flex">
+            <div id="tapLeft" class="w-1/4 h-full cursor-pointer"></div>
+            <div id="tapCenter" class="w-2/4 h-full cursor-pointer"></div>
+            <div id="tapRight" class="w-1/4 h-full cursor-pointer"></div>
+        </div>
+
+        <!-- Indicador Visual cuando está en Pausa -->
+        <div id="pauseIndicator" class="absolute inset-0 z-25 flex items-center justify-center bg-black/30 opacity-0 pointer-events-none transition-opacity duration-300">
+            <div class="w-16 h-16 rounded-full bg-black/60 border border-white/30 flex items-center justify-center text-white text-2xl backdrop-blur-sm">
+                <i class="fa-solid fa-pause"></i>
+            </div>
+        </div>
+
+        <!-- Información Inferior del Anuncio + Botón de WhatsApp -->
+        <div class="absolute bottom-0 left-0 right-0 z-30 p-5 bg-gradient-to-t from-black/95 via-black/70 to-transparent pointer-events-auto">
+            <div class="mb-3">
+                <span id="adCategory" class="px-2 py-0.5 rounded text-[10px] font-semibold tracking-wide uppercase bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+                    Proximas Actividades
+                </span>
+                <h2 id="adTitle" class="text-xl font-bold mt-1 text-white leading-tight">Título del Anuncio</h2>
+                <p id="adDescription" class="text-xs text-zinc-300 mt-1 line-clamp-2">
+                    Descripción detallada de la oferta o servicio que se muestra.
+                </p>
+            </div>
+
+            <!-- Botón directo a WhatsApp con texto dinámico -->
+            <a id="whatsappCta" href="#" target="_blank" class="w-full py-3.5 px-4 bg-emerald-600 hover:bg-emerald-500 active:bg-emerald-700 font-bold text-white text-sm rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-emerald-900/30 transition-all">
+                <i class="fa-brands fa-whatsapp text-lg"></i>
+                <span>Escribenos para mas informaciones</span>
+            </a>
+        </div>
+
+        <!-- Notificación emergente al copiar link -->
+        <div id="toast" class="hidden absolute top-20 left-1/2 -translate-x-1/2 z-50 bg-zinc-800 text-white text-xs py-2 px-4 rounded-full shadow-lg border border-zinc-700 flex items-center gap-2">
+            <i class="fa-solid fa-check text-emerald-400"></i>
+            <span>¡Enlace copiado al portapapeles!</span>
+        </div>
+    </div>
+
+    <!-- Script principal -->
+    <script src="java/main.js"></script>
+</body>
+</html>
