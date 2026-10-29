@@ -45,6 +45,7 @@ html, body {
     overflow-x: hidden; /* Evita el desplazamiento horizontal no deseado */
     margin: 0;
     padding: 0;
+    padding-bottom: 90px;
 }
 
 /* Ajusta las imágenes para que no se corten en pantallas pequeñas */
@@ -56,8 +57,9 @@ img {
 
 .btn-whatsapp {
     position: fixed;
-    bottom: 80px;       /* Distancia desde abajo */
-    right: 25px;        /* Distancia desde la derecha */
+    bottom: 30px;       /* Distancia desde abajo */
+    right: 50%;        /* Distancia desde la derecha */
+    transform: translateX(50%); /* Centra el botón horizontalmente */
     z-index: 999;      /* Se mantiene por encima de todo */
         /* max-width: 60px; Controla el tamaño máximo del icono/botón */
 }
